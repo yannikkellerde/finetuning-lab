@@ -1,4 +1,5 @@
 from datasets import Dataset
+import torch
 
 
 class ProbsDataset(Dataset):
@@ -14,6 +15,10 @@ class ProbsDataset(Dataset):
             self.input_ids.extend([inp] * int(prob * size))
             self.attention_masks.extend([attn] * int(prob * size))
             self.labels.extend([labels] * int(prob * size))
+
+        self.input_ids = torch.tensor(self.input_ids)
+        self.attention_masks = torch.tensor(self.attention_masks)
+        self.labels = torch.tensor(self.labels)
 
     def __len__(self):
         return len(self.input_ids)

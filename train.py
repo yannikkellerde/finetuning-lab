@@ -4,10 +4,10 @@ from transformers import (
     AutoTokenizer,
     PreTrainedModel,
     PreTrainedTokenizer,
-    TrainingArguments,
 )
 from dataset import ProbsDataset
-from config import DatasetConfig
+from config import DatasetConfig, TrainingArguments
+import accelerate
 
 
 def train(model_name: str, train_args: TrainingArguments, ds_config: DatasetConfig):
@@ -18,6 +18,9 @@ def train(model_name: str, train_args: TrainingArguments, ds_config: DatasetConf
         size=ds_config.size,
         pre_tokens=ds_config.pre_tokens,
     )
+
+    print(dataset[0])
+
     trainer = Trainer(model=model, args=train_args, train_dataset=dataset)
     trainer.train()
-    return model, tokenizer
+    return model
